@@ -9,7 +9,7 @@ namespace BurstDetection
         static void Main(string[] args)
         {
             //Create a burst detector
-            IBurstDetect _detector = new SimpleBurstDetect();
+            SimpleBurstDetect _detector = new SimpleBurstDetect();
 
             //Import the data
             var reader = new StreamReader(@"C:\Users\Josh\Documents\Uni\WebScience\coursework\1day\clusters.sortedby.time.csv");
@@ -33,6 +33,8 @@ namespace BurstDetection
                 _detector.Process(tweet);
 
             }
+
+            _detector.Test();
 
             var t = 3;
 
