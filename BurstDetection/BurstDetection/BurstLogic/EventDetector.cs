@@ -9,7 +9,7 @@ namespace BurstDetection.BurstLogic
      * 'current time'.
      * 
      * */
-    public class SimpleBurstDetect : IBurstDetect
+    public class EventDetector : IEventDetector
     {
         private readonly IDictionary<string, SlidingWindowCollection> _EntityWindows;
         private readonly IDictionary<int, EntityCluster> _EntityClusters;
@@ -18,7 +18,7 @@ namespace BurstDetection.BurstLogic
 
         private long CurrentUnixTime;
 
-        public SimpleBurstDetect()
+        public EventDetector()
         {
             _EntityWindows = new Dictionary<string, SlidingWindowCollection>();
             _EntityEvents = new List<EntityEvent>();
@@ -56,6 +56,27 @@ namespace BurstDetection.BurstLogic
                     if (e != null)
                         if (cluster.GetCentroidTime(CurrentUnixTime) > e.Start && !e.ContainsCluster(cluster))
                             e.AddCluster(cluster);
+                }
+
+                //Link checking
+                foreach(var e in evs.ToList())
+                {
+                    var entities = e.GetTweetEntitiesWithFrequency(0.5);
+
+                    foreach(var ent in entities)
+                    {
+                        if (e.ContainsEntity(ent))
+                            continue;
+
+                        var linkEvent = _EntityEvents.Where(i => i.ContainsEntity(ent) && !i.HasEnded).FirstOrDefault();
+                        if (linkEvent != null)
+                        {
+                            //Merge?
+                            e.MergeEvent(linkEvent);
+                            _EntityEvents.Remove(linkEvent);
+                        }
+                    }
+
                 }
 
             }

@@ -37,7 +37,7 @@ namespace BurstDetection.BurstLogic
         private bool[] IsBursting { get; set; }
         private long[] BurstEndTime { get; set; }
 
-        public bool IsCurrentlyBursting { get; set; }
+        public bool IsCurrentlyBursting { get; private set; }
 
         public override string ToString()
         {

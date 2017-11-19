@@ -4,17 +4,11 @@ using System.Text;
 
 namespace BurstDetection.BurstLogic
 {
-    /**
-     * A burst detection method is provided here.
-     * 
-     * Tweets are processed and the named entity's sliding window is updated.
-     * 
-     * */
-
-    /// <summary>
-    /// Provides a burst detection method.
+ 
+   /// <summary>
+    /// Provides an event detection method.
     /// </summary>
-    public interface IBurstDetect
+    public interface IEventDetector
     {
         /// <summary>
         /// Processes a tweet and checks for a potential event.

@@ -38,6 +38,11 @@ namespace BurstDetection.BurstLogic
             ClusterTweets.Add(tweet);
         }
 
+        public List<Tweet> GetTweets()
+        {
+            return ClusterTweets;
+        }
+
         public override string ToString()
         {
             return $"Cluster: {ClusterID}. Entity: {ClusterNamedEntity}. Tweets: {Count}";

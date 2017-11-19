@@ -25,5 +25,7 @@ namespace BurstDetection.BurstLogic
 
         public string TweetText { get; set; }
 
+        public string [] Entities { get; set; }
+
     }
 }
