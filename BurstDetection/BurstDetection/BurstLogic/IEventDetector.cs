@@ -8,7 +8,7 @@ namespace BurstDetection.BurstLogic
    /// <summary>
     /// Provides an event detection method.
     /// </summary>
-    public interface IEventDetector
+    public interface IEventDetector : IEnumerable<EntityEvent>
     {
         /// <summary>
         /// Processes a tweet and checks for a potential event.

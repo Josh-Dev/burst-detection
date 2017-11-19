@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 
 namespace BurstDetection
 {
@@ -60,6 +61,22 @@ namespace BurstDetection
                 _detector.Process(tweet);
 
             }
+
+            //Export result CSV
+            StringBuilder sb = new StringBuilder();
+
+            foreach (var ev in _detector)
+            {
+                foreach(var clust in ev.GetClusters())
+                {
+                    foreach(var tweet in clust.GetTweets())
+                    {
+                        sb.AppendLine($"{tweet.ClusterID},{tweet.ClusterNamedEntity},{tweet.TweetID}");
+                    }
+                }
+            }
+
+            File.WriteAllText(@"C:\Users\Josh\Documents\Uni\WebScience\coursework\1day\events.test.csv", sb.ToString());
 
             _detector.Test();
 

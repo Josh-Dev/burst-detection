@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -24,6 +25,7 @@ namespace BurstDetection.BurstLogic
             _EntityEvents = new List<EntityEvent>();
             _EntityClusters = new Dictionary<int, EntityCluster>();
         }
+
 
         public void Process(Tweet tweet)
         {
@@ -59,11 +61,11 @@ namespace BurstDetection.BurstLogic
                 }
 
                 //Link checking
-                foreach(var e in evs.ToList())
+                foreach (var e in evs.ToList())
                 {
                     var entities = e.GetTweetEntitiesWithFrequency(0.5);
 
-                    foreach(var ent in entities)
+                    foreach (var ent in entities)
                     {
                         if (e.ContainsEntity(ent))
                             continue;
@@ -93,16 +95,40 @@ namespace BurstDetection.BurstLogic
 
         }
 
+        public IEnumerator<EntityEvent> GetEnumerator()
+        {
+            foreach (var eve in _EntityEvents.Where(x => x.ClusterCount > 0).ToList())
+            {
+                yield return eve;
+            }
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return this.GetEnumerator();
+        }
+
+        /// <summary>
+        /// Access the potential events.
+        /// </summary>
+        /// <param name="index">The index of the events found.</param>
+        /// <returns></returns>
+        public EntityEvent this[int index]
+        {
+            get { return _EntityEvents.Where(x => x.ClusterCount > 0).ToList()[index]; }
+            private set { }
+        }
+
+
         public void Test()
         {
             var events = _EntityEvents.Where(x => x.ClusterCount > 0);
 
-            foreach(var ev in events)
+            foreach (var ev in events)
             {
                 Console.WriteLine(ev);
             }
         }
-
     }
 
 }
